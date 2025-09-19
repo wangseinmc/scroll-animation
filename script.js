@@ -1,31 +1,44 @@
-document.addEventListener("DOMContentLoaded", function () {
-  gsap.registerPlugin(ScrollTrigger);
 
-  const elements = document.querySelectorAll(".reveal-type");
+        gsap.registerPlugin(ScrollTrigger)
 
-  elements.forEach((el) => {
-    const bgColor = el.dataset.bgColor || "#999999";
-    const fgColor = el.dataset.fgColor || "#00cc99";
+        const splitTypes = document.querySelectorAll('.reveal-type')
 
-    const split = new SplitType(el, { types: "chars" });
+        splitTypes.forEach((char,i) => {
 
-    gsap.fromTo(
-      split.chars,
-      { color: bgColor, y: 20, opacity: 0 },
-      {
-        color: fgColor,
-        y: 0,
-        opacity: 1,
-        duration: 0.5,
-        stagger: 0.05,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: el,
-          start: "top 80%",
-          end: "top 20%",
-          scrub: true
+            const bg = char.dataset.bgColor
+            const fg = char.dataset.fgColor
+
+            const text = new SplitType(char, { types: 'chars'})
+
+            gsap.fromTo(text.chars, 
+                {
+                    color: bg,
+                },
+                {
+                    color: fg,
+                    duration: 0.3,
+                    stagger: 0.02,
+                    scrollTrigger: {
+                        trigger: char,
+                        start: 'top 80%',
+                        end: 'top 20%',
+                        scrub: true,
+                        markers: false,
+                        toggleActions: 'play play reverse reverse'
+                    }
+            })
+        })
+
+
+        const lenis = new Lenis()
+
+        lenis.on('scroll', (e) => {
+        console.log(e)
+        })
+
+        function raf(time) {
+        lenis.raf(time)
+        requestAnimationFrame(raf)
         }
-      }
-    );
-  });
-});
+
+        requestAnimationFrame(raf)
