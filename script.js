@@ -1,44 +1,29 @@
+document.addEventListener("DOMContentLoaded", function () {
+  if (typeof gsap === "undefined" || typeof SplitType === "undefined") return;
 
-        gsap.registerPlugin(ScrollTrigger)
+  gsap.registerPlugin(ScrollTrigger);
 
-        const splitTypes = document.querySelectorAll('.reveal-type')
+  const el = document.querySelector(".reveal-type");
+  if (!el) return;
 
-        splitTypes.forEach((char,i) => {
+  const split = new SplitType(el, { types: "chars" });
 
-            const bg = char.dataset.bgColor
-            const fg = char.dataset.fgColor
-
-            const text = new SplitType(char, { types: 'chars'})
-
-            gsap.fromTo(text.chars, 
-                {
-                    color: bg,
-                },
-                {
-                    color: fg,
-                    duration: 0.3,
-                    stagger: 0.02,
-                    scrollTrigger: {
-                        trigger: char,
-                        start: 'top 80%',
-                        end: 'top 20%',
-                        scrub: true,
-                        markers: false,
-                        toggleActions: 'play play reverse reverse'
-                    }
-            })
-        })
-
-
-        const lenis = new Lenis()
-
-        lenis.on('scroll', (e) => {
-        console.log(e)
-        })
-
-        function raf(time) {
-        lenis.raf(time)
-        requestAnimationFrame(raf)
-        }
-
-        requestAnimationFrame(raf)
+  gsap.fromTo(
+    split.chars,
+    { color: "#999999", y: 20, opacity: 0 },
+    {
+      color: "#00cc99",
+      y: 0,
+      opacity: 1,
+      duration: 0.5,
+      stagger: 0.05,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: el,
+        start: "top 80%",
+        end: "top 20%",
+        scrub: true
+      }
+    }
+  );
+});
