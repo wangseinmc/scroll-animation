@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Ensure GSAP and SplitType are loaded
   if (typeof gsap === "undefined" || typeof SplitType === "undefined") return;
 
   gsap.registerPlugin(ScrollTrigger);
