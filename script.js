@@ -1,28 +1,37 @@
-document.addEventListener("DOMContentLoaded", function () {
-  if (typeof gsap === "undefined" || typeof SplitType === "undefined") return;
+// Register plugin
+gsap.registerPlugin(ScrollTrigger);
 
-  gsap.registerPlugin(ScrollTrigger);
+// Lenis smooth scroll
+const lenis = new Lenis({
+  smooth: true,
+  lerp: 0.1
+});
 
-  const el = document.querySelector(".reveal-type");
-  if (!el) return;
+function raf(time) {
+  lenis.raf(time);
+  requestAnimationFrame(raf);
+}
+requestAnimationFrame(raf);
 
-  const split = new SplitType(el, { types: "chars" });
+// Split text into characters
+const splitTypes = document.querySelectorAll('.reveal-type');
 
-  gsap.fromTo(
-    split.chars,
-    { color: "#999999", y: 20, opacity: 0 },
+splitTypes.forEach((el) => {
+  const bg = el.closest('section').dataset.bgColor;
+  const fg = el.closest('section').dataset.fgColor;
+
+  const split = new SplitType(el, { types: 'chars' });
+
+  gsap.fromTo(split.chars, 
+    { color: bg },
     {
-      color: "#00cc99",
-      y: 0,
-      opacity: 1,
-      duration: 0.5,
+      color: fg,
       stagger: 0.05,
-      ease: "power2.out",
       scrollTrigger: {
         trigger: el,
-        start: "top 80%",
-        end: "top 20%",
-        scrub: true
+        start: 'top 100%',
+        end: 'top 10%',
+        scrub: true,
       }
     }
   );
